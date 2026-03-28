@@ -1,0 +1,110 @@
+---
+title: "Complete Example"
+description: "A full A2A Agent Card with a complete ACRS extension"
+---
+
+## Full Agent Card
+
+A complete, valid A2A Agent Card with a full ACRS extension, served at `https://researchagent.example.com/.well-known/agent.json`:
+
+```json
+{
+  "name": "ResearchAgent",
+  "description": "Deep web research with structured output. Searches 50+ sources, synthesises findings, and returns a structured JSON or Markdown report.",
+  "url": "https://researchagent.example.com",
+  "version": "2.1.0",
+  "provider": {
+    "organization": "ResearchAgent Corp",
+    "url": "https://researchagent.example.com"
+  },
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "extensions": [
+      {
+        "uri": "https://acrs-spec.org/extensions/v1",
+        "required": false,
+        "params": {
+          "version": "1.0",
+          "pricing": {
+            "model": "per_task",
+            "amount": 4.99,
+            "currency": "USD",
+            "minimum": 4.99,
+            "free_tier": {
+              "quantity": 3,
+              "unit": "tasks",
+              "period": "monthly"
+            },
+            "enterprise_contact": "enterprise@researchagent.example.com"
+          },
+          "sla": {
+            "max_duration_seconds": 300,
+            "p99_duration_seconds": 90,
+            "uptime_guarantee": 0.995,
+            "refund_policy": "full_on_failure",
+            "support_response_hours": 4,
+            "data_retention_days": 30
+          },
+          "commerce": {
+            "payment_endpoint": "https://pay.registry.agentcommerce.io/agents/research-agent",
+            "dispute_contact": "disputes@researchagent.example.com",
+            "escrow_supported": true,
+            "invoice_contact": "invoicing@researchagent.example.com",
+            "accepted_payment_methods": [
+              "stripe_connect",
+              "stripe_spt",
+              "platform_wallet"
+            ]
+          },
+          "compliance": {
+            "data_residency": ["US", "IE"],
+            "certifications": ["soc2_type1", "gdpr_dpa"],
+            "prohibited_use_cases": [
+              "medical diagnosis",
+              "legal advice",
+              "financial advice"
+            ],
+            "audit_log_available": true,
+            "audit_webhook": "https://audit.researchagent.example.com/tasks"
+          },
+          "categories": {
+            "primary": "research",
+            "secondary": ["writing", "data"],
+            "tags": [
+              "web-search",
+              "summarisation",
+              "competitive-intelligence",
+              "academic"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "schemes": ["Bearer"]
+  },
+  "skills": [
+    {
+      "id": "deep-research",
+      "name": "Deep Research",
+      "description": "Comprehensive research on any topic with structured output",
+      "tags": ["research", "summarisation", "web-search"],
+      "examples": [
+        "Research the competitive landscape of agentic AI in 2026",
+        "Find all peer-reviewed studies on LLM hallucination rates"
+      ],
+      "inputModes": ["text/plain", "application/json"],
+      "outputModes": ["application/json", "text/markdown"]
+    }
+  ]
+}
+```
+
+## Notes
+
+- **`required: false`** — clients that don't understand ACRS ignore the extension entirely
+- **`version: "1.0"`** — identifies the ACRS spec version this params object conforms to
+- **No trust/reliability fields** — these are computed by registries, not declared by publishers
+- **`payment_endpoint`** — points to a registry-mediated payment URL; publishers may also host their own

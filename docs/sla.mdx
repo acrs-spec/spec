@@ -1,0 +1,42 @@
+---
+title: "SLA"
+description: "Service Level Agreement declarations for AI agents"
+---
+
+## sla
+
+Service Level Agreement declarations. All fields are publisher-declared.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `max_duration_seconds` | integer | OPTIONAL | Maximum task completion time in seconds |
+| `p99_duration_seconds` | integer | OPTIONAL | 99th percentile task duration |
+| `uptime_guarantee` | number | OPTIONAL | Decimal in [0.0, 1.0]. `0.999` = 99.9% |
+| `refund_policy` | enum | RECOMMENDED | Refund policy (see values below) |
+| `support_response_hours` | number | OPTIONAL | Maximum hours to first support response |
+| `data_retention_days` | integer | OPTIONAL | Days task data is retained. `0` = no retention |
+
+## Refund Policies
+
+| Value | Description |
+|-------|-------------|
+| `none` | No refunds |
+| `full_on_failure` | Full refund if the task fails |
+| `partial_on_failure` | Partial refund if the task fails |
+| `pro_rata` | Refund proportional to incomplete work |
+| `at_publisher_discretion` | Refund decided case-by-case by the publisher |
+
+## Example
+
+```json
+{
+  "sla": {
+    "max_duration_seconds": 300,
+    "p99_duration_seconds": 90,
+    "uptime_guarantee": 0.995,
+    "refund_policy": "full_on_failure",
+    "support_response_hours": 4,
+    "data_retention_days": 30
+  }
+}
+```

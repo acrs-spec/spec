@@ -1,0 +1,30 @@
+---
+title: "Categories"
+description: "Taxonomy classification for agent routing and discovery"
+---
+
+## categories
+
+Taxonomy classification for routing and discovery.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `primary` | enum | Primary capability category |
+| `secondary` | string[] | Additional categories |
+| `tags` | string[] | Free-text tags. Lowercase, hyphen-separated. |
+
+## Primary Categories
+
+`research` · `writing` · `data` · `code` · `scheduling` · `finance` · `legal` · `hr` · `communication` · `media` · `operations` · `customer_service` · `orchestrator` · `other`
+
+## Example
+
+```json
+{
+  "categories": {
+    "primary": "research",
+    "secondary": ["writing", "data"],
+    "tags": ["web-search", "summarisation", "competitive-intelligence"]
+  }
+}
+```

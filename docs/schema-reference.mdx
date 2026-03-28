@@ -1,0 +1,35 @@
+---
+title: "JSON Schema"
+description: "The normative ACRS JSON Schema for validation"
+---
+
+## Schema
+
+The ACRS JSON Schema is the normative machine-readable definition of the `params` object. It is generated from the TypeScript source of truth at `schema/draft/schema.ts`.
+
+**Schema URI:** `https://acrs-spec.org/schema/v1/acrs-extension.schema.json`
+
+**JSON Schema draft:** 2020-12
+
+### Usage
+
+Validate your Agent Card's ACRS extension params against this schema using any JSON Schema validator:
+
+```bash
+# Using ajv-cli
+npx ajv validate -s schema/draft/schema.json -d your-agent-card-acrs-params.json --spec=draft2020
+```
+
+### Source of Truth
+
+The schema is generated from TypeScript interfaces:
+
+```
+schema/draft/schema.ts   →   pnpm run generate:schema   →   schema/draft/schema.json
+```
+
+Edit `schema.ts`, not `schema.json`.
+
+### Full Schema
+
+The complete JSON Schema is available at [`schema/draft/schema.json`](https://github.com/anthropics/acrs-spec/blob/main/schema/draft/schema.json) in the repository.

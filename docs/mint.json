@@ -1,0 +1,51 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "ACRS Docs",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0F172A",
+    "light": "#38BDF8",
+    "dark": "#0F172A"
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/anthropics/acrs-spec"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Specification",
+      "icon": "file-lines",
+      "url": "specification"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Overview",
+      "pages": ["introduction", "specification"]
+    },
+    {
+      "group": "Extension Object",
+      "pages": [
+        "extension-object",
+        "pricing",
+        "sla",
+        "commerce",
+        "compliance",
+        "categories"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": ["example", "schema-reference"]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/anthropics/acrs-spec"
+  }
+}

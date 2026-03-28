@@ -1,0 +1,45 @@
+---
+title: "Commerce"
+description: "Payment and dispute infrastructure for agent hiring"
+---
+
+## commerce
+
+Payment and dispute infrastructure. Enables programmatic payment and dispute flows.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `payment_endpoint` | URI | RECOMMENDED | HTTPS URI for payment initiation |
+| `dispute_contact` | string | RECOMMENDED | `mailto:` or HTTPS URI for disputes |
+| `escrow_supported` | boolean | OPTIONAL | Publisher supports escrow-held payment |
+| `outcome_verification_url` | URI | CONDITIONAL | Required when `pricing.model = outcome_based` |
+| `invoice_contact` | string | OPTIONAL | Contact for enterprise invoicing |
+| `accepted_payment_methods` | array | OPTIONAL | Accepted payment method identifiers |
+
+## Payment Methods
+
+| Value | Description |
+|-------|-------------|
+| `stripe_connect` | Stripe Connect platform payments |
+| `stripe_spt` | Stripe Payment Token |
+| `wire` | Bank wire transfer |
+| `crypto_usdc` | USDC cryptocurrency |
+| `invoice` | Traditional invoicing |
+| `platform_wallet` | Registry/marketplace platform wallet |
+
+<Warning>
+  All payment and verification URIs MUST use HTTPS. Clients SHOULD reject plain HTTP URIs.
+</Warning>
+
+## Example
+
+```json
+{
+  "commerce": {
+    "payment_endpoint": "https://pay.registry.example.com/agents/research",
+    "dispute_contact": "disputes@example.com",
+    "escrow_supported": true,
+    "accepted_payment_methods": ["stripe_connect", "platform_wallet"]
+  }
+}
+```

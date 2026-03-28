@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/definitions/AcrsExtensionParams",
+  "definitions": {
+    "AcrsExtensionParams": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "ACRS specification version. MUST be \"1.0\" for this revision.",
+          "pattern": "^\\d+\\.\\d+$"
+        },
+        "pricing": {
+          "$ref": "#/definitions/AcrsPricing",
+          "description": "Commercial pricing declaration."
+        },
+        "sla": {
+          "$ref": "#/definitions/AcrsSla",
+          "description": "Service level commitments."
+        },
+        "commerce": {
+          "$ref": "#/definitions/AcrsCommerce",
+          "description": "Payment and dispute infrastructure."
+        },
+        "compliance": {
+          "$ref": "#/definitions/AcrsCompliance",
+          "description": "Regulatory and data handling declarations."
+        },
+        "categories": {
+          "$ref": "#/definitions/AcrsCategories",
+          "description": "Taxonomy classification for routing and discovery."
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "additionalProperties": false,
+      "description": "ACRS Extension Params.\n\nDeclared inside `capabilities.extensions` in an A2A Agent Card with `uri: \"https://acrs-spec.org/extensions/v1\"`.",
+      "title": "ACRS Extension Params"
+    },
+    "AcrsPricing": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "$ref": "#/definitions/PricingModel",
+          "description": "Pricing model for task execution."
+        },
+        "amount": {
+          "type": "number",
+          "description": "Base price in declared currency. For per_token: price per 1,000 tokens.",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "description": "ISO 4217 currency code.",
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "minimum": {
+          "type": "number",
+          "description": "Minimum charge per invocation.",
+          "minimum": 0
+        },
+        "maximum": {
+          "type": "number",
+          "description": "Maximum charge per invocation (cap).",
+          "minimum": 0
+        },
+        "free_tier": {
+          "$ref": "#/definitions/AcrsFreeTier",
+          "description": "Free-tier allowance."
+        },
+        "enterprise_contact": {
+          "type": "string",
+          "description": "Contact for volume pricing negotiation."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Commercial pricing declaration."
+    },
+    "PricingModel": {
+      "type": "string",
+      "enum": [
+        "per_task",
+        "per_token",
+        "per_minute",
+        "per_output_unit",
+        "subscription",
+        "outcome_based",
+        "free",
+        "negotiated"
+      ],
+      "description": "Pricing model for task execution."
+    },
+    "AcrsFreeTier": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "number",
+          "description": "Number of free units allowed."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit type (e.g. \"tasks\", \"tokens\", \"minutes\")."
+        },
+        "period": {
+          "type": "string",
+          "description": "Reset period (e.g. \"monthly\", \"weekly\")."
+        }
+      },
+      "required": [
+        "quantity",
+        "unit"
+      ],
+      "additionalProperties": false,
+      "description": "Free-tier allowance for task execution."
+    },
+    "AcrsSla": {
+      "type": "object",
+      "properties": {
+        "max_duration_seconds": {
+          "type": "integer",
+          "description": "Maximum task completion time in seconds.",
+          "minimum": 1
+        },
+        "p99_duration_seconds": {
+          "type": "integer",
+          "description": "99th percentile task duration in seconds (publisher-declared).",
+          "minimum": 1
+        },
+        "uptime_guarantee": {
+          "type": "number",
+          "description": "Uptime guarantee as a decimal fraction. 0.999 = 99.9%.",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "refund_policy": {
+          "$ref": "#/definitions/RefundPolicy",
+          "description": "Refund policy declared by the publisher."
+        },
+        "support_response_hours": {
+          "type": "number",
+          "description": "Maximum hours to first support response.",
+          "minimum": 0
+        },
+        "data_retention_days": {
+          "type": "integer",
+          "description": "Days task data is retained. 0 = no retention.",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "description": "Service Level Agreement declarations. All fields are publisher-declared."
+    },
+    "RefundPolicy": {
+      "type": "string",
+      "enum": [
+        "none",
+        "full_on_failure",
+        "partial_on_failure",
+        "pro_rata",
+        "at_publisher_discretion"
+      ],
+      "description": "Refund policy declared by the publisher."
+    },
+    "AcrsCommerce": {
+      "type": "object",
+      "properties": {
+        "payment_endpoint": {
+          "type": "string",
+          "description": "HTTPS URI for payment initiation requests.",
+          "format": "uri"
+        },
+        "dispute_contact": {
+          "type": "string",
+          "description": "mailto: or HTTPS URI for dispute submission."
+        },
+        "escrow_supported": {
+          "type": "boolean",
+          "description": "Publisher supports escrow-held payment."
+        },
+        "outcome_verification_url": {
+          "type": "string",
+          "description": "Verification endpoint. Required when pricing.model = outcome_based.",
+          "format": "uri"
+        },
+        "invoice_contact": {
+          "type": "string",
+          "description": "Contact for enterprise invoicing."
+        },
+        "accepted_payment_methods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PaymentMethod"
+          },
+          "description": "Accepted payment method identifiers."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Payment and dispute infrastructure."
+    },
+    "PaymentMethod": {
+      "type": "string",
+      "enum": [
+        "stripe_connect",
+        "stripe_spt",
+        "wire",
+        "crypto_usdc",
+        "invoice",
+        "platform_wallet"
+      ],
+      "description": "Accepted payment method identifiers."
+    },
+    "AcrsCompliance": {
+      "type": "object",
+      "properties": {
+        "data_residency": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "description": "ISO 3166-1 alpha-2 country codes where task data is processed."
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Certification"
+          },
+          "description": "Compliance certifications held by the publisher."
+        },
+        "prohibited_use_cases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Use cases the publisher explicitly does not support."
+        },
+        "audit_log_available": {
+          "type": "boolean",
+          "description": "Publisher will provide task audit log on request."
+        },
+        "audit_webhook": {
+          "type": "string",
+          "description": "HTTPS URI receiving task audit events.",
+          "format": "uri"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Regulatory and data handling declarations. All fields are publisher-declared."
+    },
+    "Certification": {
+      "type": "string",
+      "enum": [
+        "soc2_type1",
+        "soc2_type2",
+        "iso_27001",
+        "hipaa",
+        "pci_dss",
+        "gdpr_dpa",
+        "other"
+      ],
+      "description": "Compliance certification identifiers."
+    },
+    "AcrsCategories": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "$ref": "#/definitions/PrimaryCategory",
+          "description": "Primary capability category."
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional capability categories."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "description": "Free-text tags. Lowercase, hyphen-separated."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Taxonomy classification for routing and discovery."
+    },
+    "PrimaryCategory": {
+      "type": "string",
+      "enum": [
+        "research",
+        "writing",
+        "data",
+        "code",
+        "scheduling",
+        "finance",
+        "legal",
+        "hr",
+        "communication",
+        "media",
+        "operations",
+        "customer_service",
+        "orchestrator",
+        "other"
+      ],
+      "description": "Primary capability category for routing and discovery."
+    }
+  },
+  "$id": "https://acrs-spec.org/schema/v1/acrs-extension.schema.json"
+}

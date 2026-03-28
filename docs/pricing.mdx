@@ -1,0 +1,50 @@
+---
+title: "Pricing"
+description: "How agents declare pricing for task execution"
+---
+
+## pricing
+
+Declares how the agent charges for task execution.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | enum | RECOMMENDED | Pricing model (see values below) |
+| `amount` | number | RECOMMENDED | Base price in declared currency |
+| `currency` | string | RECOMMENDED | ISO 4217 currency code. Default: `USD` |
+| `minimum` | number | OPTIONAL | Minimum charge per invocation |
+| `maximum` | number | OPTIONAL | Maximum charge per invocation (cap) |
+| `free_tier` | object | OPTIONAL | `{ quantity, unit, period }` |
+| `enterprise_contact` | string | OPTIONAL | Contact for volume pricing |
+
+## Pricing Models
+
+| Value | Description |
+|-------|-------------|
+| `per_task` | Fixed price per discrete task invocation |
+| `per_token` | Price per 1,000 tokens processed |
+| `per_minute` | Price per wall-clock minute of execution |
+| `per_output_unit` | Price per unit of output (page, row, image) |
+| `subscription` | Flat periodic fee |
+| `outcome_based` | Contingent on verified success — requires `commerce.outcome_verification_url` |
+| `free` | No charge — MAY still require authentication |
+| `negotiated` | Out-of-band — `enterprise_contact` SHOULD be provided |
+
+## Example
+
+```json
+{
+  "pricing": {
+    "model": "per_task",
+    "amount": 4.99,
+    "currency": "USD",
+    "minimum": 4.99,
+    "free_tier": {
+      "quantity": 3,
+      "unit": "tasks",
+      "period": "monthly"
+    },
+    "enterprise_contact": "enterprise@example.com"
+  }
+}
+```

@@ -1,0 +1,48 @@
+---
+title: "Extension Object"
+description: "Structure of the ACRS extension declaration in an A2A Agent Card"
+---
+
+## Extension Declaration
+
+ACRS is declared as a formal A2A extension in the `capabilities.extensions` array:
+
+```json
+{
+  "uri": "https://acrs-spec.org/extensions/v1",
+  "required": false,
+  "params": {
+    "version": "1.0",
+    "pricing": { },
+    "sla": { },
+    "commerce": { },
+    "compliance": { },
+    "categories": { }
+  }
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `uri` | string | REQUIRED | MUST be `https://acrs-spec.org/extensions/v1` |
+| `required` | boolean | REQUIRED | MUST be `false` — ACRS is data-only |
+| `params` | object | REQUIRED | The ACRS params object |
+
+<Warning>
+  `required` MUST be `false`. ACRS adds commercial metadata but does not impose requirements on how clients structure their A2A requests.
+</Warning>
+
+## The params Object
+
+| Sub-object | Required | Description |
+|------------|----------|-------------|
+| `version` | REQUIRED | ACRS spec version. MUST be `"1.0"`. |
+| `pricing` | RECOMMENDED | Commercial pricing declaration |
+| `sla` | RECOMMENDED | Service level commitments |
+| `commerce` | RECOMMENDED | Payment and dispute infrastructure |
+| `compliance` | OPTIONAL | Regulatory and data handling |
+| `categories` | RECOMMENDED | Capability taxonomy for routing |
+
+## Trust and Reliability
+
+Trust tier assignment and reliability scoring are **not part of this standard**. These are computed by registries from observed task outcomes — publishers cannot self-declare trustworthiness.

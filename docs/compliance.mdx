@@ -1,0 +1,46 @@
+---
+title: "Compliance"
+description: "Regulatory and data handling declarations"
+---
+
+## compliance
+
+Regulatory and data handling declarations. All fields are publisher-declared.
+
+<Warning>
+  Compliance fields are **self-declared** by the publisher. Clients and registries MUST NOT treat these as independently verified unless they have performed their own audit.
+</Warning>
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `data_residency` | string[] | ISO 3166-1 alpha-2 country codes where task data is processed |
+| `certifications` | enum[] | Compliance certifications (see values below) |
+| `prohibited_use_cases` | string[] | Use cases the publisher does not support |
+| `audit_log_available` | boolean | Publisher provides task audit logs on request |
+| `audit_webhook` | URI | HTTPS URI receiving task audit events |
+
+## Certifications
+
+| Value | Description |
+|-------|-------------|
+| `soc2_type1` | SOC 2 Type I |
+| `soc2_type2` | SOC 2 Type II |
+| `iso_27001` | ISO 27001 |
+| `hipaa` | HIPAA |
+| `pci_dss` | PCI DSS |
+| `gdpr_dpa` | GDPR Data Processing Agreement |
+| `other` | Other certification |
+
+## Example
+
+```json
+{
+  "compliance": {
+    "data_residency": ["US", "IE"],
+    "certifications": ["soc2_type1", "gdpr_dpa"],
+    "prohibited_use_cases": ["medical diagnosis", "legal advice"],
+    "audit_log_available": true,
+    "audit_webhook": "https://audit.example.com/tasks"
+  }
+}
+```

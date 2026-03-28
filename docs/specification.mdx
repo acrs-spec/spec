@@ -1,0 +1,67 @@
+---
+title: "Specification"
+description: "Terminology, conformance requirements, and A2A context for ACRS"
+---
+
+## Terminology
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this specification are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+
+| Term | Definition |
+|------|-----------|
+| **Agent Card** | A JSON document conforming to A2A that describes an AI agent's identity, capabilities, and endpoints. Served at `/.well-known/agent.json`. |
+| **Publisher** | The entity that operates an AI agent and declares its commercial metadata via ACRS. |
+| **Registry** | A platform that indexes, stores, and serves Agent Cards for discovery. |
+| **Orchestrator** | An agent, platform, or system that discovers and hires other agents to perform tasks. |
+| **Client** | Any system that reads and interprets an A2A Agent Card. |
+| **Task** | A discrete unit of work delegated to an agent, as defined by the A2A task lifecycle. |
+| **Extension** | An A2A mechanism for adding optional metadata via `capabilities.extensions`. |
+
+## Conformance
+
+### ACRS-Conformant Publisher
+
+A publisher is ACRS-conformant if its Agent Card includes an extension entry that satisfies:
+
+1. `uri` MUST be `https://acrs-spec.org/extensions/v1`
+2. `required` MUST be `false`
+3. `params.version` MUST be `"1.0"`
+4. `params` SHOULD include `pricing`, `sla`, and `categories`
+5. `params` SHOULD include `commerce` if the agent accepts programmatic payment
+6. All fields MUST conform to the ACRS JSON Schema
+
+### ACRS-Aware Client
+
+A client is ACRS-aware if it:
+
+1. Recognises the ACRS extension URI
+2. Parses `params` according to this specification
+3. MUST ignore unknown fields without error
+4. MUST NOT reject Agent Cards lacking the ACRS extension
+5. SHOULD validate `params` against the JSON Schema before acting on the data
+
+<Info>
+  A client MAY support only a subset of ACRS sections (e.g. only `pricing` and `categories`). It MUST still ignore unsupported sections without error.
+</Info>
+
+## A2A Agent Card Context
+
+An A2A Agent Card is a JSON document served at `/.well-known/agent.json`. The `capabilities.extensions` array allows Agent Cards to carry additional metadata:
+
+```json
+{
+  "capabilities": {
+    "extensions": [
+      {
+        "uri": "https://acrs-spec.org/extensions/v1",
+        "required": false,
+        "params": { "version": "1.0", "...": "..." }
+      }
+    ]
+  }
+}
+```
+
+Each extension entry has a `uri` (identifying the spec), `required` (whether clients must understand it), and `params` (extension-specific data).
+
+ACRS occupies exactly one entry. It does not modify any other part of the Agent Card. An agent MAY declare multiple extensions — ACRS coexists with any other extension.

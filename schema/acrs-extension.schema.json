@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://acrs-spec.org/schema/v1/acrs-extension.schema.json",
+  "title": "ACRS Extension Params",
+  "description": "Agent Commerce Registry Standard (ACRS) extension params object. Declared inside capabilities.extensions in an A2A Agent Card with uri: https://acrs-spec.org/extensions/v1",
+  "type": "object",
+  "required": ["version"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "ACRS specification version. MUST be '1.0' for this revision.",
+      "examples": ["1.0"]
+    },
+    "pricing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "per_task",
+            "per_token",
+            "per_minute",
+            "per_output_unit",
+            "subscription",
+            "outcome_based",
+            "free",
+            "negotiated"
+          ],
+          "description": "Pricing model for task execution"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Base price in declared currency"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code",
+          "default": "USD"
+        },
+        "minimum": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum charge per invocation"
+        },
+        "maximum": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum charge per invocation"
+        },
+        "free_tier": {
+          "type": "object",
+          "required": ["quantity", "unit"],
+          "additionalProperties": false,
+          "properties": {
+            "quantity": { "type": "number" },
+            "unit": { "type": "string" },
+            "period": { "type": "string" }
+          }
+        },
+        "enterprise_contact": {
+          "type": "string",
+          "description": "Contact for volume pricing negotiation"
+        }
+      }
+    },
+    "sla": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_duration_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum task completion time in seconds"
+        },
+        "p99_duration_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "99th percentile task duration (publisher-declared)"
+        },
+        "uptime_guarantee": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Uptime guarantee as decimal fraction. 0.999 = 99.9%"
+        },
+        "refund_policy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "full_on_failure",
+            "partial_on_failure",
+            "pro_rata",
+            "at_publisher_discretion"
+          ]
+        },
+        "support_response_hours": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum hours to first support response"
+        },
+        "data_retention_days": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Days task data is retained. 0 = no retention."
+        }
+      }
+    },
+    "commerce": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payment_endpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "HTTPS URI for payment initiation requests"
+        },
+        "dispute_contact": {
+          "type": "string",
+          "description": "mailto: or HTTPS URI for dispute submission"
+        },
+        "escrow_supported": {
+          "type": "boolean",
+          "description": "Publisher supports escrow-held payment"
+        },
+        "outcome_verification_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Required when pricing.model = outcome_based"
+        },
+        "invoice_contact": {
+          "type": "string",
+          "description": "Contact for enterprise invoicing"
+        },
+        "accepted_payment_methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "stripe_connect",
+              "stripe_spt",
+              "wire",
+              "crypto_usdc",
+              "invoice",
+              "platform_wallet"
+            ]
+          }
+        }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "data_residency": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "description": "ISO 3166-1 alpha-2 country codes where task data is processed"
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "soc2_type1",
+              "soc2_type2",
+              "iso_27001",
+              "hipaa",
+              "pci_dss",
+              "gdpr_dpa",
+              "other"
+            ]
+          }
+        },
+        "prohibited_use_cases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Use cases the publisher explicitly does not support"
+        },
+        "audit_log_available": {
+          "type": "boolean"
+        },
+        "audit_webhook": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "categories": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "string",
+          "enum": [
+            "research",
+            "writing",
+            "data",
+            "code",
+            "scheduling",
+            "finance",
+            "legal",
+            "hr",
+            "communication",
+            "media",
+            "operations",
+            "customer_service",
+            "orchestrator",
+            "other"
+          ]
+        },
+        "secondary": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        }
+      }
+    }
+  }
+}
