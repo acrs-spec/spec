@@ -99,7 +99,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 A publisher is ACRS-conformant if its Agent Card includes an extension entry in `capabilities.extensions` that satisfies all of the following:
 
 1. The `uri` field MUST be `https://acrs-spec.org/extensions/v1`
-2. The `required` field MUST be `false`
+2. The `required` field SHOULD be `false` but MAY be `true` if the publisher requires clients to understand its commercial terms
 3. The `params` object MUST include a `version` field set to `"1.0"`
 4. The `params` object SHOULD include `pricing`, `sla`, and `categories`
 5. The `params` object SHOULD include `commerce` if the agent accepts programmatic payment
@@ -154,7 +154,7 @@ The `capabilities.extensions` array allows Agent Cards to carry additional metad
 | `required` | boolean | Whether clients MUST understand this extension to interact with the agent |
 | `params` | object | Extension-specific data |
 
-ACRS uses this mechanism to attach commercial metadata. Because `required` is always `false`, clients that do not understand ACRS continue to work with the agent normally.
+ACRS uses this mechanism to attach commercial metadata. When `required` is `false`, clients that do not understand ACRS continue to work with the agent normally. When `required` is `true`, the publisher is signalling that clients must understand the commercial terms before interacting.
 
 ### 5.3 How ACRS Fits
 
@@ -184,10 +184,10 @@ ACRS occupies exactly one entry in the `capabilities.extensions` array. It does 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `uri` | string | REQUIRED | MUST be `https://acrs-spec.org/extensions/v1` |
-| `required` | boolean | REQUIRED | MUST be `false` — ACRS is a data-only extension |
+| `required` | boolean | REQUIRED | SHOULD be `false`. MAY be `true` if the publisher requires clients to understand commercial terms. |
 | `params` | object | REQUIRED | The ACRS extension object. See Section 6.2. |
 
-**Note:** `required` MUST be `false`. ACRS adds commercial metadata to the Agent Card but does not impose any requirements on how clients structure their A2A requests. A client that does not understand ACRS MUST NOT be rejected.
+**Note:** `required` SHOULD be `false` for maximum interoperability — clients that do not understand ACRS will ignore the extension and interact normally. Publishers MAY set `required` to `true` to signal that understanding commercial terms is a prerequisite for interaction (e.g. when payment is mandatory before task execution).
 
 ### 6.2 The params Object
 
@@ -427,7 +427,7 @@ This represents a research agent published at `https://researchagent.example.com
 
 ### Notes
 
-- `required: false` — clients that do not understand ACRS ignore the extension and continue normally
+- `required: false` — in this example, clients that do not understand ACRS ignore the extension and continue normally. Publishers MAY set `true` if commercial terms must be acknowledged.
 - `version: "1.0"` — identifies the ACRS spec version this params object conforms to
 - Trust tier and reliability scoring are absent — these are computed by registries, not declared by publishers
 - The `payment_endpoint` in this example points to a registry-mediated payment URL — publishers may also use their own endpoint

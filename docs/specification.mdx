@@ -24,7 +24,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 A publisher is ACRS-conformant if its Agent Card includes an extension entry that satisfies:
 
 1. `uri` MUST be `https://acrs-spec.org/extensions/v1`
-2. `required` MUST be `false`
+2. `required` SHOULD be `false` but MAY be `true` if the publisher requires clients to understand commercial terms
 3. `params.version` MUST be `"1.0"`
 4. `params` SHOULD include `pricing`, `sla`, and `categories`
 5. `params` SHOULD include `commerce` if the agent accepts programmatic payment

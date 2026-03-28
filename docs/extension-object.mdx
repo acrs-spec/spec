@@ -25,11 +25,11 @@ ACRS is declared as a formal A2A extension in the `capabilities.extensions` arra
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `uri` | string | REQUIRED | MUST be `https://acrs-spec.org/extensions/v1` |
-| `required` | boolean | REQUIRED | MUST be `false` — ACRS is data-only |
+| `required` | boolean | REQUIRED | SHOULD be `false`. MAY be `true` if publisher requires clients to understand commercial terms. |
 | `params` | object | REQUIRED | The ACRS params object |
 
 <Warning>
-  `required` MUST be `false`. ACRS adds commercial metadata but does not impose requirements on how clients structure their A2A requests.
+  `required` SHOULD be `false` for maximum interoperability. Publishers MAY set `true` when payment or commercial acknowledgment is a prerequisite for interaction.
 </Warning>
 
 ## The params Object

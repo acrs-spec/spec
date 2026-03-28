@@ -104,7 +104,7 @@ A complete, valid A2A Agent Card with a full ACRS extension, served at `https://
 
 ## Notes
 
-- **`required: false`** — clients that don't understand ACRS ignore the extension entirely
+- **`required: false`** — in this example, clients that don't understand ACRS ignore the extension. Publishers MAY set `true` if commercial terms must be acknowledged.
 - **`version: "1.0"`** — identifies the ACRS spec version this params object conforms to
 - **No trust/reliability fields** — these are computed by registries, not declared by publishers
 - **`payment_endpoint`** — points to a registry-mediated payment URL; publishers may also host their own

@@ -50,7 +50,7 @@ An agent declares the ACRS extension in its Agent Card at `/.well-known/agent.js
 ```
 
 <Note>
-  `required` is always `false`. Clients that don't understand ACRS ignore the extension and interact with the agent normally.
+  `required` is typically `false` — clients that don't understand ACRS ignore the extension. Publishers MAY set `true` if commercial terms must be acknowledged before interaction.
 </Note>
 
 ## Relationship to Other Standards
